@@ -322,7 +322,7 @@
 
     <script>
         const TOTAL_QR_CODES = 100;
-        const ADMIN_PASSWORD = 'admin123'; // Vaihda tämä turvallisemmaksi!
+        const ADMIN_PASSWORD = 'pohhoc-3kawtI-xikwin';
 
         function checkPassword() {
             const password = document.getElementById('password-input').value;
@@ -394,7 +394,51 @@
 
         function getRedirectURLs() {
             const stored = localStorage.getItem('qr-redirects');
-            return stored ? JSON.parse(stored) : {};
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            
+            // Oletusarvoiset URL-osoitteet
+            const defaultURLs = {
+                '001': 'https://www.puuhapark.fi',
+                '002': 'https://www.hiidenlinna.com/',
+                '003': 'https://www.vihtiski.fi/',
+                '004': 'https://vihdinkino.fi/',
+                '005': 'https://hillside.fi/',
+                '006': 'https://koirankuje.fi/',
+                '007': 'https://www.unitedfestivals.fi/hiidenkirnufestival/',
+                '008': 'https://www.veikkolankartano.fi/',
+                '009': 'https://www.vihtiseura.fi/',
+                '010': 'https://hevoslaakso.fi/',
+                '011': 'https://www.hawkhill.fi/',
+                '012': 'https://www.nuuksiontaika.fi/',
+                '013': 'https://studio59.fi/',
+                '014': 'https://www.visitvihti.fi/',
+                '015': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/museo/',
+                '016': 'https://selli.fi/',
+                '017': 'https://ilonaliikunta.fi/',
+                '018': 'https://www.ofeigur.net/',
+                '019': 'https://www.pahantorjuja.fi/',
+                '020': 'https://vinha.net/',
+                '021': 'https://liikuntakeskusposeidon.fi/',
+                '022': 'https://www.villajoutsela.fi/',
+                '023': 'https://www.skuti.fi/',
+                '024': 'https://poistielta.com/',
+                '025': 'https://www.nups.fi/',
+                '026': 'https://vihdinteatteri.fi/',
+                '027': 'https://vihti.mll.fi/',
+                '028': 'https://www.suurvihdinkilta.com/',
+                '029': 'https://vihdinkalastusseura.fi/',
+                '030': 'https://www.harjunkiekko.fi/',
+                '031': 'https://www.rasti-vihti.fi/',
+                '032': 'https://www.dogsndeli.fi/',
+                '033': 'https://www.visitvihti.fi/seikkailu/wefly/',
+                '034': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/galleria-pictor/'
+            };
+            
+            // Tallennetaan oletusarvot localStorageen
+            localStorage.setItem('qr-redirects', JSON.stringify(defaultURLs));
+            return defaultURLs;
         }
 
         function saveRedirectURL(qrId, url) {
