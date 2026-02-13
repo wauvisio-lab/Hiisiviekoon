@@ -475,10 +475,12 @@
                     <div class="form-group">
                         <label for="url-${qrId}">Kohde-URL:</label>
                         <input type="url" id="url-${qrId}" value="${currentURL}" 
-                               placeholder="https://example.com" 
-                               onchange="saveRedirectURL('${qrId}', this.value)">
+                               placeholder="https://example.com">
                     </div>
-                    ${currentURL ? `<button class="button danger" onclick="clearURL('${qrId}')">Tyhjennä</button>` : ''}
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="button" onclick="saveRedirectURL('${qrId}', document.getElementById('url-${qrId}').value); alert('Tallennettu!');" style="font-size: 13px; padding: 8px 16px;">💾 Tallenna</button>
+                        ${currentURL ? `<button class="button danger" onclick="clearURL('${qrId}')" style="font-size: 13px; padding: 8px 16px;">🗑️ Tyhjennä</button>` : ''}
+                    </div>
                 `;
                 
                 list.appendChild(config);
