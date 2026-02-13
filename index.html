@@ -83,108 +83,159 @@
             margin-top: 20px;
         }
 
-        .qr-item {
+        .qr-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
-            transition: transform 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
         }
 
-        .qr-item:hover {
+        .qr-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .qr-code {
-            margin: 15px auto;
-            display: block;
-        }
-
-        .qr-label {
-            font-weight: 700;
-            font-size: 18px;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .url-display {
-            font-size: 12px;
-            color: #666;
-            word-break: break-all;
-            margin-top: 10px;
-            min-height: 30px;
-        }
-
-        .download-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 10px;
-            transition: background 0.3s;
-        }
-
-        .download-btn:hover {
-            background: #5568d3;
+        .qr-card canvas {
+            margin: 10px auto;
         }
 
         .url-config {
-            margin-bottom: 20px;
-            padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
         }
 
-        .url-config label {
+        .url-config h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
             display: block;
+            margin-bottom: 5px;
             font-weight: 600;
-            margin-bottom: 8px;
             color: #333;
         }
 
-        .url-config input {
+        .form-group input {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 5px;
             font-size: 14px;
             transition: border-color 0.3s;
         }
 
-        .url-config input:focus {
+        .form-group input:focus {
             outline: none;
             border-color: #667eea;
         }
 
-        .save-btn {
-            background: #10b981;
+        .button {
+            background: #667eea;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .button.danger {
+            background: #dc3545;
+        }
+
+        .button.danger:hover {
+            background: #c82333;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
             font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .error-message {
+            color: #dc3545;
             margin-top: 10px;
-            transition: background 0.3s;
-        }
-
-        .save-btn:hover {
-            background: #059669;
-        }
-
-        .redirect-page {
             text-align: center;
-            padding: 50px 20px;
-        }
-
-        .redirect-page h2 {
-            color: #333;
-            margin-bottom: 20px;
+            display: none;
         }
 
         .search-box {
@@ -199,419 +250,196 @@
             font-size: 16px;
         }
 
-        .export-btn, .import-btn {
-            background: #f59e0b;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            margin: 10px 5px;
-            transition: background 0.3s;
-        }
-
-        .export-btn:hover, .import-btn:hover {
-            background: #d97706;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-
-        .download-all-btn {
-            background: #8b5cf6;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            margin: 20px 0;
-            transition: background 0.3s;
-        }
-
-        .download-all-btn:hover {
-            background: #7c3aed;
-        }
-
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+        .action-buttons {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .login-box {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 400px;
-            width: 90%;
-        }
-
-        .login-box h2 {
-            color: #667eea;
+            gap: 10px;
             margin-bottom: 20px;
-            text-align: center;
         }
 
-        .login-box input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        .login-box input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .login-btn {
-            width: 100%;
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .login-btn:hover {
-            background: #5568d3;
-        }
-
-        .error-message {
-            color: #ef4444;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .logout-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            transition: background 0.3s;
-            z-index: 1000;
-        }
-
-        .logout-btn:hover {
-            background: #dc2626;
-        }
-
-        .password-hint {
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            margin-top: 10px;
-            font-style: italic;
+        .download-btn {
+            text-decoration: none;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
     <div id="login-overlay" class="login-overlay">
         <div class="login-box">
-            <h2>🔒 Hallintapaneeli</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 20px;">Syötä salasana päästäksesi hallintaan</p>
-            <input type="password" id="password-input" placeholder="Salasana" onkeypress="if(event.key==='Enter') checkPassword()">
-            <button class="login-btn" onclick="checkPassword()">Kirjaudu</button>
-            <div id="error-message" class="error-message"></div>
-            <div class="password-hint">Kirjaudu sisään päästäksesi hallintaan</div>
+            <h2>🔐 Kirjaudu sisään</h2>
+            <div class="form-group">
+                <label for="password-input">Salasana:</label>
+                <input type="password" id="password-input" placeholder="Syötä salasana" onkeypress="if(event.key === 'Enter') checkPassword()">
+            </div>
+            <button class="button" onclick="checkPassword()" style="width: 100%;">Kirjaudu</button>
+            <div class="error-message" id="error-message">Väärä salasana!</div>
         </div>
     </div>
 
-    <button id="logout-btn" class="logout-btn" style="display: none;" onclick="logout()">Kirjaudu ulos</button>
+    <button id="logout-btn" class="logout-btn" onclick="logout()" style="display: none;">Kirjaudu ulos</button>
 
-    <div class="container" id="main-content" style="display: none;">
-        <h1>🔗 QR-koodien uudelleenohjausjärjestelmä</h1>
-
-        <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('admin')">⚙️ Hallinta</button>
-            <button class="tab-button" onclick="switchTab('qrcodes')">📱 QR-koodit</button>
-        </div>
-
-        <div id="admin-tab" class="tab-content active">
-            <div class="admin-panel">
-                <div class="stats">
-                    <div class="stat-card">
-                        <div class="stat-number" id="total-qr">45</div>
-                        <div class="stat-label">QR-koodia yhteensä</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="configured-qr">0</div>
-                        <div class="stat-label">Konfiguroituja</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="unconfigured-qr">45</div>
-                        <div class="stat-label">Konfiguroimattomia</div>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <button class="export-btn" onclick="exportConfig()">📥 Vie asetukset</button>
-                    <button class="import-btn" onclick="document.getElementById('import-file').click()">📤 Tuo asetukset</button>
-                    <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importConfig(event)">
-                </div>
-
-                <div class="search-box">
-                    <input type="text" id="search" placeholder="🔍 Etsi QR-koodia (esim. QR001)..." oninput="filterConfigs()">
-                </div>
-
-                <div id="config-list"></div>
+    <div id="main-content" style="display: none;">
+        <div class="container">
+            <h1>🔗 QR-koodien hallinta</h1>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('qr-codes')">QR-koodit</button>
+                <button class="tab-button" onclick="switchTab('url-config')">URL-asetukset</button>
             </div>
-        </div>
 
-        <div id="qrcodes-tab" class="tab-content">
-            <div class="admin-panel">
-                <div style="text-align: center;">
-                    <button class="download-all-btn" onclick="downloadAllQRCodes()">📥 Lataa kaikki QR-koodit</button>
+            <div id="qr-codes" class="tab-content active">
+                <div class="admin-panel">
+                    <div class="stats">
+                        <div class="stat-card">
+                            <h3 id="configured-qr">0</h3>
+                            <p>Konfiguroitua QR-koodia</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="unconfigured-qr">100</h3>
+                            <p>Konfiguroimatonta</p>
+                        </div>
+                    </div>
+                    <div class="qr-grid" id="qr-grid"></div>
                 </div>
-                <div class="qr-grid" id="qr-grid"></div>
+            </div>
+
+            <div id="url-config" class="tab-content">
+                <div class="admin-panel">
+                    <div class="action-buttons">
+                        <button class="button" onclick="exportConfig()">📥 Lataa asetukset</button>
+                        <button class="button" onclick="document.getElementById('import-file').click()">📤 Tuo asetukset</button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importConfig(event)">
+                    </div>
+                    
+                    <div class="search-box">
+                        <input type="text" id="search" placeholder="🔍 Hae QR-koodia..." oninput="filterConfigs()">
+                    </div>
+                    
+                    <div id="config-list"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        const TOTAL_QR_CODES = 45;
-        const BASE_URL = window.location.origin + window.location.pathname;
-        const ADMIN_PASSWORD = "pohhoc-3kawtI-xikwin";
-        
-        function isLoggedIn() {
-            return sessionStorage.getItem('qr-admin-logged-in') === 'true';
-        }
+        const TOTAL_QR_CODES = 100;
+        const ADMIN_PASSWORD = 'admin123'; // Vaihda tämä turvallisemmaksi!
 
         function checkPassword() {
-            const input = document.getElementById('password-input');
-            const password = input.value;
+            const password = document.getElementById('password-input').value;
             const errorMsg = document.getElementById('error-message');
-
+            
             if (password === ADMIN_PASSWORD) {
-                sessionStorage.setItem('qr-admin-logged-in', 'true');
+                localStorage.setItem('isLoggedIn', 'true');
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 document.getElementById('logout-btn').style.display = 'block';
-                errorMsg.textContent = '';
-                input.value = '';
+                errorMsg.style.display = 'none';
+                generateQRCodes();
                 generateConfigList();
                 updateStats();
             } else {
-                errorMsg.textContent = '❌ Väärä salasana';
-                input.value = '';
-                input.focus();
+                errorMsg.style.display = 'block';
+                document.getElementById('password-input').value = '';
             }
+        }
+
+        function isLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
         }
 
         function logout() {
-            sessionStorage.removeItem('qr-admin-logged-in');
+            localStorage.removeItem('isLoggedIn');
             location.reload();
         }
 
-        function getRedirectURLs() {
-            const stored = localStorage.getItem('qr-redirects');
-            if (stored) {
-                return JSON.parse(stored);
-            }
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
             
-            const defaultURLs = {
-                'QR001': 'https://www.puuhapark.fi',
-                'QR002': 'https://www.hiidenlinna.com/',
-                'QR003': 'https://www.vihtiski.fi/',
-                'QR004': 'https://vihdinkino.fi/',
-                'QR005': 'https://hillside.fi/',
-                'QR006': 'https://koirankuje.fi/',
-                'QR007': 'https://www.unitedfestivals.fi/hiidenkirnufestival/',
-                'QR008': 'https://www.veikkolankartano.fi/',
-                'QR009': 'https://www.vihtiseura.fi/',
-                'QR010': 'https://hevoslaakso.fi/',
-                'QR011': 'https://www.hawkhill.fi/',
-                'QR012': 'https://www.nuuksiontaika.fi/',
-                'QR013': 'https://studio59.fi/',
-                'QR014': 'https://www.visitvihti.fi/',
-                'QR015': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/museo/',
-                'QR016': 'https://selli.fi/',
-                'QR017': 'https://ilonaliikunta.fi/',
-                'QR018': 'https://www.ofeigur.net/',
-                'QR019': 'https://www.pahantorjuja.fi/',
-                'QR020': 'https://vinha.net/',
-                'QR021': 'https://liikuntakeskusposeidon.fi/',
-                'QR022': 'https://www.villajoutsela.fi/',
-                'QR023': 'https://www.skuti.fi/',
-                'QR024': 'https://poistielta.com/',
-                'QR025': 'https://www.nups.fi/',
-                'QR026': 'https://vihdinteatteri.fi/',
-                'QR027': 'https://vihti.mll.fi/',
-                'QR028': 'https://www.suurvihdinkilta.com/',
-                'QR029': 'https://vihdinkalastusseura.fi/',
-                'QR030': 'https://www.harjunkiekko.fi/',
-                'QR031': 'https://www.rasti-vihti.fi/',
-                'QR032': 'https://www.dogsndeli.fi/',
-                'QR033': 'https://www.visitvihti.fi/seikkailu/wefly/',
-                'QR034': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/galleria-pictor/'
-            };
-            
-            localStorage.setItem('qr-redirects', JSON.stringify(defaultURLs));
-            return defaultURLs;
-        }
-
-        function saveRedirectURLs(urls) {
-            localStorage.setItem('qr-redirects', JSON.stringify(urls));
-            updateStats();
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            if (tab === 'admin') {
-                document.querySelector('.tab-button:nth-child(1)').classList.add('active');
-                document.getElementById('admin-tab').classList.add('active');
-            } else {
-                document.querySelector('.tab-button:nth-child(2)').classList.add('active');
-                document.getElementById('qrcodes-tab').classList.add('active');
-                generateQRCodes();
-            }
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
         }
 
         function generateQRCodes() {
             const grid = document.getElementById('qr-grid');
             grid.innerHTML = '';
-            const urls = getRedirectURLs();
-
+            
+            const baseURL = window.location.origin + window.location.pathname;
+            
             for (let i = 1; i <= TOTAL_QR_CODES; i++) {
-                const qrId = `QR${String(i).padStart(3, '0')}`;
-                const redirectURL = `${BASE_URL}?qr=${qrId}`;
+                const qrId = String(i).padStart(3, '0');
+                const url = `${baseURL}?qr=${qrId}`;
                 
-                const item = document.createElement('div');
-                item.className = 'qr-item';
-                item.innerHTML = `
-                    <div class="qr-label">${qrId}</div>
-                    <canvas id="qr-${qrId}" class="qr-code"></canvas>
-                    <div class="url-display">${urls[qrId] || 'Ei määritetty'}</div>
-                    <button class="download-btn" onclick="downloadQR('${qrId}')">Lataa PNG</button>
+                const card = document.createElement('div');
+                card.className = 'qr-card';
+                card.innerHTML = `
+                    <h3>QR ${qrId}</h3>
+                    <canvas id="qr-${qrId}"></canvas>
+                    <a href="${url}" target="_blank" class="button download-btn" style="margin-top: 10px;">Testaa</a>
                 `;
-                grid.appendChild(item);
-
-                const canvas = document.getElementById(`qr-${qrId}`);
+                
+                grid.appendChild(card);
+                
                 new QRious({
-                    element: canvas,
-                    value: redirectURL,
-                    size: 200,
-                    level: 'H'
+                    element: document.getElementById(`qr-${qrId}`),
+                    value: url,
+                    size: 150
                 });
             }
         }
 
-        function downloadQR(qrId) {
-            const canvas = document.getElementById(`qr-${qrId}`);
-            if (canvas) {
-                canvas.toBlob(function(blob) {
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.download = `${qrId}.png`;
-                    link.href = url;
-                    link.click();
-                    URL.revokeObjectURL(url);
-                });
-            }
+        function getRedirectURLs() {
+            const stored = localStorage.getItem('qr-redirects');
+            return stored ? JSON.parse(stored) : {};
         }
 
-        async function downloadAllQRCodes() {
-            alert('QR-koodien lataaminen alkaa. Tämä voi kestää hetken...');
-            
-            for (let i = 1; i <= TOTAL_QR_CODES; i++) {
-                const qrId = `QR${String(i).padStart(3, '0')}`;
-                await new Promise(resolve => setTimeout(resolve, 100));
-                downloadQR(qrId);
+        function saveRedirectURL(qrId, url) {
+            const urls = getRedirectURLs();
+            if (url.trim()) {
+                urls[qrId] = url.trim();
+            } else {
+                delete urls[qrId];
             }
-            
-            alert('Kaikki QR-koodit ladattu!');
+            localStorage.setItem('qr-redirects', JSON.stringify(urls));
+            updateStats();
         }
 
         function generateConfigList() {
-            const container = document.getElementById('config-list');
-            container.innerHTML = '';
+            const list = document.getElementById('config-list');
+            list.innerHTML = '';
             const urls = getRedirectURLs();
-
+            
             for (let i = 1; i <= TOTAL_QR_CODES; i++) {
-                const qrId = `QR${String(i).padStart(3, '0')}`;
+                const qrId = String(i).padStart(3, '0');
                 const currentURL = urls[qrId] || '';
                 
                 const config = document.createElement('div');
                 config.className = 'url-config';
                 config.dataset.qrId = qrId;
                 config.innerHTML = `
-                    <label for="url-${qrId}">${qrId} - Kohde-URL</label>
-                    <input type="url" id="url-${qrId}" value="${currentURL}" placeholder="https://example.com">
-                    <button class="save-btn" onclick="saveURL('${qrId}')">💾 Tallenna</button>
+                    <h3>QR ${qrId}</h3>
+                    <div class="form-group">
+                        <label for="url-${qrId}">Kohde-URL:</label>
+                        <input type="url" id="url-${qrId}" value="${currentURL}" 
+                               placeholder="https://example.com" 
+                               onchange="saveRedirectURL('${qrId}', this.value)">
+                    </div>
+                    ${currentURL ? `<button class="button danger" onclick="clearURL('${qrId}')">Tyhjennä</button>` : ''}
                 `;
-                container.appendChild(config);
+                
+                list.appendChild(config);
             }
         }
 
-        function saveURL(qrId) {
-            const input = document.getElementById(`url-${qrId}`);
-            const url = input.value.trim();
-            
-            if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
-                alert('URL:n täytyy alkaa http:// tai https://');
-                return;
+        function clearURL(qrId) {
+            if (confirm(`Haluatko varmasti tyhjentää QR ${qrId} URL:n?`)) {
+                saveRedirectURL(qrId, '');
+                generateConfigList();
             }
-
-            const urls = getRedirectURLs();
-            if (url) {
-                urls[qrId] = url;
-            } else {
-                delete urls[qrId];
-            }
-            saveRedirectURLs(urls);
-            
-            alert(`${qrId} URL tallennettu!`);
         }
 
         function filterConfigs() {
@@ -675,9 +503,11 @@
                     window.location.href = targetURL;
                 } else {
                     document.body.innerHTML = `
-                        <div class="redirect-page">
-                            <h2>⚠️ QR-koodi ${qrId} ei ole konfiguroitu</h2>
-                            <p>Ota yhteyttä järjestelmän ylläpitäjään.</p>
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; font-family: sans-serif;">
+                            <div>
+                                <h2 style="color: #dc3545;">⚠️ QR-koodi ${qrId} ei ole konfiguroitu</h2>
+                                <p>Ota yhteyttä järjestelmän ylläpitäjään.</p>
+                            </div>
                         </div>
                     `;
                 }
@@ -695,6 +525,7 @@
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 document.getElementById('logout-btn').style.display = 'block';
+                generateQRCodes();
                 generateConfigList();
                 updateStats();
             } else {
@@ -703,3 +534,6 @@
                 document.getElementById('password-input').focus();
             }
         });
+    </script>
+</body>
+</html>
