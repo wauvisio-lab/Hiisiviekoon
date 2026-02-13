@@ -476,19 +476,25 @@
         }
 
         function saveAndNotify(qrId) {
+            console.log('saveAndNotify kutsuttu QR:lle', qrId);
             const urlInput = document.getElementById(`url-${qrId}`);
+            console.log('URL input elementti:', urlInput);
             const url = urlInput.value;
+            console.log('URL arvo:', url);
             
             if (!url || !url.trim()) {
+                console.log('URL tyhjä!');
                 alert('Syötä URL-osoite ensin!');
                 return;
             }
             
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                console.log('URL ei ala http(s)://');
                 alert('URL:n pitää alkaa http:// tai https://');
                 return;
             }
             
+            console.log('Kutsutaan saveRedirectURL');
             saveRedirectURL(qrId, url);
             
             const status = document.getElementById(`status-${qrId}`);
@@ -498,6 +504,7 @@
                     status.style.display = 'none';
                 }, 2000);
             }
+            console.log('Tallennus valmis');
         }
 
         function generateConfigList() {
@@ -616,20 +623,29 @@
 
         function handleRedirect() {
             const urlParams = new URLSearchParams(window.location.search);
-            const qrId = urlParams.get('qr');
+            let qrId = urlParams.get('qr');
             
             if (qrId) {
+                // Normalisoi QR ID kolminumeroiseksi (esim. "35" -> "035")
+                qrId = String(qrId).padStart(3, '0');
+                console.log('QR redirect: qrId =', qrId);
+                
                 const urls = getRedirectURLs();
+                console.log('Kaikki URL:t:', urls);
                 const targetURL = urls[qrId];
+                console.log('Haettu URL avaimella', qrId, ':', targetURL);
                 
                 if (targetURL) {
+                    console.log('Ohjataan:', targetURL);
                     window.location.href = targetURL;
                 } else {
+                    console.log('URL ei löytynyt!');
                     document.body.innerHTML = `
                         <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; font-family: sans-serif;">
                             <div>
                                 <h2 style="color: #dc3545;">⚠️ QR-koodi ${qrId} ei ole konfiguroitu</h2>
                                 <p>Ota yhteyttä järjestelmän ylläpitäjään.</p>
+                                <p style="font-size: 12px; color: #666; margin-top: 20px;">Debug: Avain "${qrId}" ei löydy localStoragesta</p>
                             </div>
                         </div>
                     `;
