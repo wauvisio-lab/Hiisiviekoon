@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR-koodien uudelleenohjausjärjestelmä</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .tab-button {
+            background: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .qr-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .qr-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .qr-code {
+            margin: 15px auto;
+            display: block;
+        }
+
+        .qr-label {
+            font-weight: 700;
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .url-display {
+            font-size: 12px;
+            color: #666;
+            word-break: break-all;
+            margin-top: 10px;
+            min-height: 30px;
+        }
+
+        .download-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #5568d3;
+        }
+
+        .url-config {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .url-config label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .url-config input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .url-config input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .save-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #059669;
+        }
+
+        .redirect-page {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .redirect-page h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .export-btn, .import-btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+
+        .export-btn:hover, .import-btn:hover {
+            background: #d97706;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .download-all-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+
+        .download-all-btn:hover {
+            background: #7c3aed;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #5568d3;
+        }
+
+        .error-message {
+            color: #ef4444;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            transition: background 0.3s;
+            z-index: 1000;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        .password-hint {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-box">
+            <h2>🔒 Hallintapaneeli</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Syötä salasana päästäksesi hallintaan</p>
+            <input type="password" id="password-input" placeholder="Salasana" onkeypress="if(event.key==='Enter') checkPassword()">
+            <button class="login-btn" onclick="checkPassword()">Kirjaudu</button>
+            <div id="error-message" class="error-message"></div>
+            <div class="password-hint">Kirjaudu sisään päästäksesi hallintaan</div>
+        </div>
+    </div>
+
+    <button id="logout-btn" class="logout-btn" style="display: none;" onclick="logout()">Kirjaudu ulos</button>
+
+    <div class="container" id="main-content" style="display: none;">
+        <h1>🔗 QR-koodien uudelleenohjausjärjestelmä</h1>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('admin')">⚙️ Hallinta</button>
+            <button class="tab-button" onclick="switchTab('qrcodes')">📱 QR-koodit</button>
+        </div>
+
+        <div id="admin-tab" class="tab-content active">
+            <div class="admin-panel">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-qr">45</div>
+                        <div class="stat-label">QR-koodia yhteensä</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="configured-qr">0</div>
+                        <div class="stat-label">Konfiguroituja</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="unconfigured-qr">45</div>
+                        <div class="stat-label">Konfiguroimattomia</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button class="export-btn" onclick="exportConfig()">📥 Vie asetukset</button>
+                    <button class="import-btn" onclick="document.getElementById('import-file').click()">📤 Tuo asetukset</button>
+                    <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importConfig(event)">
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="🔍 Etsi QR-koodia (esim. QR001)..." oninput="filterConfigs()">
+                </div>
+
+                <div id="config-list"></div>
+            </div>
+        </div>
+
+        <div id="qrcodes-tab" class="tab-content">
+            <div class="admin-panel">
+                <div style="text-align: center;">
+                    <button class="download-all-btn" onclick="downloadAllQRCodes()">📥 Lataa kaikki QR-koodit</button>
+                </div>
+                <div class="qr-grid" id="qr-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TOTAL_QR_CODES = 45;
+        const BASE_URL = window.location.origin + window.location.pathname;
+        const ADMIN_PASSWORD = "pohhoc-3kawtI-xikwin";
+        
+        function isLoggedIn() {
+            return sessionStorage.getItem('qr-admin-logged-in') === 'true';
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('password-input');
+            const password = input.value;
+            const errorMsg = document.getElementById('error-message');
+
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('qr-admin-logged-in', 'true');
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('logout-btn').style.display = 'block';
+                errorMsg.textContent = '';
+                input.value = '';
+                generateConfigList();
+                updateStats();
+            } else {
+                errorMsg.textContent = '❌ Väärä salasana';
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('qr-admin-logged-in');
+            location.reload();
+        }
+
+        function getRedirectURLs() {
+            const stored = localStorage.getItem('qr-redirects');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            
+            const defaultURLs = {
+                'QR001': 'https://www.puuhapark.fi',
+                'QR002': 'https://www.hiidenlinna.com/',
+                'QR003': 'https://www.vihtiski.fi/',
+                'QR004': 'https://vihdinkino.fi/',
+                'QR005': 'https://hillside.fi/',
+                'QR006': 'https://koirankuje.fi/',
+                'QR007': 'https://www.unitedfestivals.fi/hiidenkirnufestival/',
+                'QR008': 'https://www.veikkolankartano.fi/',
+                'QR009': 'https://www.vihtiseura.fi/',
+                'QR010': 'https://hevoslaakso.fi/',
+                'QR011': 'https://www.hawkhill.fi/',
+                'QR012': 'https://www.nuuksiontaika.fi/',
+                'QR013': 'https://studio59.fi/',
+                'QR014': 'https://www.visitvihti.fi/',
+                'QR015': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/museo/',
+                'QR016': 'https://selli.fi/',
+                'QR017': 'https://ilonaliikunta.fi/',
+                'QR018': 'https://www.ofeigur.net/',
+                'QR019': 'https://www.pahantorjuja.fi/',
+                'QR020': 'https://vinha.net/',
+                'QR021': 'https://liikuntakeskusposeidon.fi/',
+                'QR022': 'https://www.villajoutsela.fi/',
+                'QR023': 'https://www.skuti.fi/',
+                'QR024': 'https://poistielta.com/',
+                'QR025': 'https://www.nups.fi/',
+                'QR026': 'https://vihdinteatteri.fi/',
+                'QR027': 'https://vihti.mll.fi/',
+                'QR028': 'https://www.suurvihdinkilta.com/',
+                'QR029': 'https://vihdinkalastusseura.fi/',
+                'QR030': 'https://www.harjunkiekko.fi/',
+                'QR031': 'https://www.rasti-vihti.fi/',
+                'QR032': 'https://www.dogsndeli.fi/',
+                'QR033': 'https://www.visitvihti.fi/seikkailu/wefly/',
+                'QR034': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/galleria-pictor/'
+            };
+            
+            localStorage.setItem('qr-redirects', JSON.stringify(defaultURLs));
+            return defaultURLs;
+        }
+
+        function saveRedirectURLs(urls) {
+            localStorage.setItem('qr-redirects', JSON.stringify(urls));
+            updateStats();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tab === 'admin') {
+                document.querySelector('.tab-button:nth-child(1)').classList.add('active');
+                document.getElementById('admin-tab').classList.add('active');
+            } else {
+                document.querySelector('.tab-button:nth-child(2)').classList.add('active');
+                document.getElementById('qrcodes-tab').classList.add('active');
+                generateQRCodes();
+            }
+        }
+
+        function generateQRCodes() {
+            const grid = document.getElementById('qr-grid');
+            grid.innerHTML = '';
+            const urls = getRedirectURLs();
+
+            for (let i = 1; i <= TOTAL_QR_CODES; i++) {
+                const qrId = `QR${String(i).padStart(3, '0')}`;
+                const redirectURL = `${BASE_URL}?qr=${qrId}`;
+                
+                const item = document.createElement('div');
+                item.className = 'qr-item';
+                item.innerHTML = `
+                    <div class="qr-label">${qrId}</div>
+                    <canvas id="qr-${qrId}" class="qr-code"></canvas>
+                    <div class="url-display">${urls[qrId] || 'Ei määritetty'}</div>
+                    <button class="download-btn" onclick="downloadQR('${qrId}')">Lataa PNG</button>
+                `;
+                grid.appendChild(item);
+
+                const canvas = document.getElementById(`qr-${qrId}`);
+                new QRious({
+                    element: canvas,
+                    value: redirectURL,
+                    size: 200,
+                    level: 'H'
+                });
+            }
+        }
+
+        function downloadQR(qrId) {
+            const canvas = document.getElementById(`qr-${qrId}`);
+            if (canvas) {
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = `${qrId}.png`;
+                    link.href = url;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                });
+            }
+        }
+
+        async function downloadAllQRCodes() {
+            alert('QR-koodien lataaminen alkaa. Tämä voi kestää hetken...');
+            
+            for (let i = 1; i <= TOTAL_QR_CODES; i++) {
+                const qrId = `QR${String(i).padStart(3, '0')}`;
+                await new Promise(resolve => setTimeout(resolve, 100));
+                downloadQR(qrId);
+            }
+            
+            alert('Kaikki QR-koodit ladattu!');
+        }
+
+        function generateConfigList() {
+            const container = document.getElementById('config-list');
+            container.innerHTML = '';
+            const urls = getRedirectURLs();
+
+            for (let i = 1; i <= TOTAL_QR_CODES; i++) {
+                const qrId = `QR${String(i).padStart(3, '0')}`;
+                const currentURL = urls[qrId] || '';
+                
+                const config = document.createElement('div');
+                config.className = 'url-config';
+                config.dataset.qrId = qrId;
+                config.innerHTML = `
+                    <label for="url-${qrId}">${qrId} - Kohde-URL</label>
+                    <input type="url" id="url-${qrId}" value="${currentURL}" placeholder="https://example.com">
+                    <button class="save-btn" onclick="saveURL('${qrId}')">💾 Tallenna</button>
+                `;
+                container.appendChild(config);
+            }
+        }
+
+        function saveURL(qrId) {
+            const input = document.getElementById(`url-${qrId}`);
+            const url = input.value.trim();
+            
+            if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('URL:n täytyy alkaa http:// tai https://');
+                return;
+            }
+
+            const urls = getRedirectURLs();
+            if (url) {
+                urls[qrId] = url;
+            } else {
+                delete urls[qrId];
+            }
+            saveRedirectURLs(urls);
+            
+            alert(`${qrId} URL tallennettu!`);
+        }
+
+        function filterConfigs() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const configs = document.querySelectorAll('.url-config');
+            
+            configs.forEach(config => {
+                const qrId = config.dataset.qrId.toLowerCase();
+                config.style.display = qrId.includes(search) ? 'block' : 'none';
+            });
+        }
+
+        function exportConfig() {
+            const urls = getRedirectURLs();
+            const dataStr = JSON.stringify(urls, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `qr-config-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+
+        function importConfig(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const config = JSON.parse(e.target.result);
+                    localStorage.setItem('qr-redirects', JSON.stringify(config));
+                    alert('Asetukset tuotu onnistuneesti!');
+                    generateConfigList();
+                    updateStats();
+                } catch (error) {
+                    alert('Virhe asetuksia tuotaessa: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function updateStats() {
+            const urls = getRedirectURLs();
+            const configured = Object.keys(urls).length;
+            const unconfigured = TOTAL_QR_CODES - configured;
+            
+            document.getElementById('configured-qr').textContent = configured;
+            document.getElementById('unconfigured-qr').textContent = unconfigured;
+        }
+
+        function handleRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const qrId = urlParams.get('qr');
+            
+            if (qrId) {
+                const urls = getRedirectURLs();
+                const targetURL = urls[qrId];
+                
+                if (targetURL) {
+                    window.location.href = targetURL;
+                } else {
+                    document.body.innerHTML = `
+                        <div class="redirect-page">
+                            <h2>⚠️ QR-koodi ${qrId} ei ole konfiguroitu</h2>
+                            <p>Ota yhteyttä järjestelmän ylläpitäjään.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('qr')) {
+                handleRedirect();
+                return;
+            }
+
+            if (isLoggedIn()) {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('logout-btn').style.display = 'block';
+                generateConfigList();
+                updateStats();
+            } else {
+                document.getElementById('login-overlay').style.display = 'flex';
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('password-input').focus();
+            }
+        });
