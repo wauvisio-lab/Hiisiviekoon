@@ -401,10 +401,12 @@
         function getRedirectURLs() {
             const stored = localStorage.getItem('qr-redirects');
             if (stored) {
-                return JSON.parse(stored);
+                const urls = JSON.parse(stored);
+                console.log('Ladattu localStorage:', urls);
+                return urls;
             }
             
-            // Oletusarvoiset URL-osoitteet
+            // Oletusarvoiset URL-osoitteet (vain jos ei ole tallennettuja)
             const defaultURLs = {
                 '001': 'https://www.puuhapark.fi',
                 '002': 'https://www.hiidenlinna.com/',
@@ -442,20 +444,60 @@
                 '034': 'https://www.vihti.fi/kulttuuri-ja-vapaa-aika/galleria-pictor/'
             };
             
-            // Tallennetaan oletusarvot localStorageen
+            // Tallennetaan oletusarvot localStorageen vain ensimmäisellä kerralla
+            console.log('Alustetaan oletusarvot');
             localStorage.setItem('qr-redirects', JSON.stringify(defaultURLs));
             return defaultURLs;
         }
 
         function saveRedirectURL(qrId, url) {
+            console.log('saveRedirectURL kutsuttu:', qrId, url);
             const urls = getRedirectURLs();
-            if (url.trim()) {
+            console.log('Nykyiset URL:t ennen tallennusta:', urls);
+            
+            if (url && url.trim()) {
                 urls[qrId] = url.trim();
+                console.log('Lisätty:', qrId, '→', url.trim());
             } else {
                 delete urls[qrId];
+                console.log('Poistettu:', qrId);
             }
+            
             localStorage.setItem('qr-redirects', JSON.stringify(urls));
+            console.log('Tallennettu localStorageen:', urls);
+            
+            // Tarkista että todella tallentui
+            const verification = localStorage.getItem('qr-redirects');
+            console.log('Varmistus - localStorage sisältö:', JSON.parse(verification));
+            
             updateStats();
+            generateConfigList(); // Päivitetään lista
+            return true;
+        }
+
+        function saveAndNotify(qrId) {
+            const urlInput = document.getElementById(`url-${qrId}`);
+            const url = urlInput.value;
+            
+            if (!url || !url.trim()) {
+                alert('Syötä URL-osoite ensin!');
+                return;
+            }
+            
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('URL:n pitää alkaa http:// tai https://');
+                return;
+            }
+            
+            saveRedirectURL(qrId, url);
+            
+            const status = document.getElementById(`status-${qrId}`);
+            if (status) {
+                status.style.display = 'inline';
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 2000);
+            }
         }
 
         function generateConfigList() {
@@ -478,8 +520,9 @@
                                placeholder="https://example.com">
                     </div>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <button class="button" onclick="saveRedirectURL('${qrId}', document.getElementById('url-${qrId}').value); alert('Tallennettu!');" style="font-size: 13px; padding: 8px 16px;">💾 Tallenna</button>
+                        <button class="button" onclick="saveAndNotify('${qrId}')" style="font-size: 13px; padding: 8px 16px;">💾 Tallenna</button>
                         ${currentURL ? `<button class="button danger" onclick="clearURL('${qrId}')" style="font-size: 13px; padding: 8px 16px;">🗑️ Tyhjennä</button>` : ''}
+                        <span id="status-${qrId}" style="color: green; font-size: 12px; display: none;">✓ Tallennettu</span>
                     </div>
                 `;
                 
